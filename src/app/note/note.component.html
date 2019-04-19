@@ -11,7 +11,7 @@
 </p>
 
 <!-- {{message}} -->
-<div butt (click)="save_note_log()">Save Log</div>
+<div butt (click)="noclick || save_note_log()" [className]="noclick? 'fadebutton':''">Save Log</div>
 
 
 
@@ -24,7 +24,7 @@
 <table>
    
   <tr>
-    <th >Date</th>
+    <th >Saved</th>
     <th>Note</th>
     <th></th>
   

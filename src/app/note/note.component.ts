@@ -26,6 +26,8 @@ message="test";
 
   deleting =false;
 
+  noclick= false;
+
   constructor() { 
 
 this.connect().then(()=>{
@@ -136,10 +138,12 @@ connect(){
         this.blink = "none"
         this.tanimate= ""
   },3000);
+  
+  res();
     }); 
 
     console.log(JSON.stringify(data));
-    res();
+    
   });
 
   }
@@ -148,6 +152,8 @@ connect(){
 
   //save the note as list
 save_note_log(){
+
+this.noclick=true;  // prevent button to click while saving
 
   let time= new Date();
   this.send(
@@ -159,7 +165,11 @@ save_note_log(){
     .then((res)=>{
     console.log("done");
     }).then(()=>{
-      this.getallnotelist()
+      setTimeout(() => {
+        this.getallnotelist()
+      }, 300);
+      this.noclick=false;
+      console.log("button re-enables again")
     })
    
 }
