@@ -1,0 +1,46 @@
+
+<h1 title [class]="tanimate">
+  wNotes
+  </h1>
+  
+
+<h3 [class]="blink" b> Saving</h3>
+
+<div class="" style="">
+ <span *ngIf="online==true" style="background-color: rgba(172, 255, 47, 0.644)">Websocket connected</span>
+ <span *ngIf="online==false" style="background-color: rgba(255, 107, 107, 0.644)">Websocket disconnected</span>
+</div>
+
+<p style="margin-top:15px;"> 
+  <textarea cols="100" [value]="message" #woop (keyup)="wow(woop.value)" ></textarea>
+</p>
+
+<!-- {{message}} -->
+<div butt (click)="noclick || save_note_log()" [className]="noclick? 'fadebutton':''">Save Log</div>
+
+
+
+
+
+
+<div sav *ngIf="notelist.length!=0">
+    <h2><b>Saved Notes</b></h2>  <span style="color:red" *ngIf="deleting==true"><b>Deleting...</b></span>
+
+<table>
+   
+  <tr>
+    <th >Saved</th>
+    <th>Note</th>
+    <th></th>
+  
+  </tr>
+
+ 
+  <tr *ngFor="let x of notelist">
+      <td>{{x.time|mom}}</td>
+      <td>{{x.note}}</td>
+      <td><span delete (click)="deletenote(x._id)"><img src="https://image.flaticon.com/icons/svg/401/401036.svg"></span></td>
+    </tr>
+  
+  </table>
+</div>

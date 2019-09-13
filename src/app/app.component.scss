@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Rock+Salt');
+
+*{
+    text-align: center; 
+}
+[title]{
+
+    font-size: 3em;
+
+        user-select: none;
+        
+        font-family: 'Rock Salt', cursive !important;
+
+}
+
+[title]:hover{
+    animation: dropShadow 1.5s;
+        
+    @keyframes dropShadow{
+        50%{
+            color: #fe46ce;
+            text-shadow: 
+                1px 1px #02b1fe,
+                2px 2px #02b1fe,
+                3px 3px #02b1fe,
+                4px 4px #02b1fe,
+                5px 5px #02b1fe;
+        }
+    }
+}
