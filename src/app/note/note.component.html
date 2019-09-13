@@ -6,6 +6,11 @@
 
 <h3 [class]="blink" b> Saving</h3>
 
+<div class="" style="">
+ <span *ngIf="online==true" style="background-color: rgba(172, 255, 47, 0.644)">Websocket connected</span>
+ <span *ngIf="online==false" style="background-color: rgba(255, 107, 107, 0.644)">Websocket disconnected</span>
+</div>
+
 <p style="margin-top:15px;"> 
   <textarea cols="100" [value]="message" #woop (keyup)="wow(woop.value)" ></textarea>
 </p>

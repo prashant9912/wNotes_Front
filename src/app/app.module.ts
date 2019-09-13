@@ -15,7 +15,7 @@ import { MomPipe } from './mom.pipe';
     MomPipe
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
   ],
   providers: [],

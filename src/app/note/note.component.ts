@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 
+import fetch from 'node-fetch';
+
 
 @Component({
   selector: 'app-note',
@@ -11,6 +13,9 @@ import * as moment from 'moment';
 
 
 export class NoteComponent implements OnInit {
+
+  url= "https://wxnotes.herokuapp.com/"
+   //url ="http://localhost:1000/"
 
   blink="none";
 tanimate;
@@ -28,10 +33,21 @@ message="test";
 
   noclick= false;
 
+  online= false;
+
   constructor() { 
 
 this.connect().then(()=>{
-  console.log("Connected");
+  console.log("Connected " + new Date());
+  this.online = true;
+  
+  setInterval(()=>{
+
+    this.ws.send(JSON.stringify({ping:1}))
+
+  },30000)
+
+
 }).catch(()=>{
   console.log("Failed to Connect")
 })
@@ -39,7 +55,7 @@ this.connect().then(()=>{
 
 //load initial note data
 
-fetch("http://localhost:1000/note")
+fetch(this.url+"note")
 .then((res)=>{return res.json()})
 .then((data)=>{console.log(data.name)
 this.tex=data.body;
@@ -61,11 +77,20 @@ this.message = this.tex; // get the text from serve and show
 
 
     this.ws.onmessage = function(event) {
+
       console.log(event.data);
       this.message=event.data;
       console.log(this.message)
-      
+     
     }.bind(this)
+
+
+    this.ws.onclose = ()=>{
+     this.online= false;
+      console.log("Disconnected :("+ new Date())
+
+    }
+
 
     this.getallnotelist() // calls the all list notes
 
@@ -76,7 +101,7 @@ this.message = this.tex; // get the text from serve and show
 connect(){
   return new Promise((res,reject)=>{
     
-    this.ws = new WebSocket('ws://localhost:1000');
+    this.ws = new WebSocket('wss://wxnotes.herokuapp.com');
     this.ws.onopen=()=>{res()}  
     this.ws.onerror = ()=>{
       reject()
@@ -106,9 +131,20 @@ connect(){
 
      
       console.log(this.tex)
-    this.ws.send(this.tex);
 
-    this.send({note:`${this.tex}`},"http://localhost:1000/updatenote")
+      let json = {
+        note:this.tex
+      }
+
+    // this.ws.send(this.tex);
+    
+       this.ws.send(JSON.stringify(json), (err)=>{
+        console.log("ERROR")
+       })
+  
+   
+
+    this.send({note:`${this.tex}`},this.url+"updatenote")
     }
 
    
@@ -138,7 +174,7 @@ connect(){
         this.blink = "none"
         this.tanimate= ""
   },3000);
-  
+
   res();
     }); 
 
@@ -160,7 +196,7 @@ this.noclick=true;  // prevent button to click while saving
     {time:`${time}`,
     type:"savenote",
     note:`${this.tex}`}
-    ,"http://localhost:1000/savenote")
+    ,this.url+"savenote")
     
     .then((res)=>{
     console.log("done");
@@ -178,7 +214,7 @@ this.noclick=true;  // prevent button to click while saving
 getallnotelist(){
 
   return new Promise((res,req)=>{
-  fetch("http://localhost:1000/notelist")
+  fetch(this.url+"notelist")
   .then((res)=>{return res.json()})
   .then((data)=>{console.log(data) // get the text from serve and show
     this.notelist = data.reverse();
@@ -193,7 +229,7 @@ deletenote(id){
 
 this.deleting=true;
 
-  fetch("http://localhost:1000/deletenote", {
+  fetch(this.url+"deletenote", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     cache: "no-cache",
