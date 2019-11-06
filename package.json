@@ -30,7 +30,7 @@
     "core-js": "^2.5.4",
     "express": "^4.15.2",
     "moment": "^2.24.0",
-    "mongoose": "^5.4.19",
+    "mongoose": "^5.7.5",
     "ng-lightning": "^3.0.0",
     "node-fetch": "^2.6.0",
     "rxjs": "~6.3.3",
